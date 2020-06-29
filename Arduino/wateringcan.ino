@@ -1,9 +1,9 @@
 #define I2C_ADDR 0x3F
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
-LiquidCrystal_I2C lcd(0x3F,2,1,0,4,5,6,7,3, POSITIVE);
 #define esp8266 Serial1
 #define speed8266 115200
+#include <stdlib.h>
 
 String statusChWriteKey = "";  
 
@@ -13,8 +13,6 @@ String statusChWriteKey = "";
 //sensor dht
 #include "dht.h"
 #include <dht.h>
-
-#include <stdlib.h>
 #define dht_apin A0
 dht DHT;
 int airTemp = 0 ;
@@ -37,7 +35,7 @@ long elapsedWriteTime = 0;
 int rele = 3;
  
 boolean error;
-
+LiquidCrystal_I2C lcd(0x3F,2,1,0,4,5,6,7,3, POSITIVE);
 void setup()
 {
   lcd.begin(16,2);
@@ -78,21 +76,21 @@ void loop()
 
  if (elapsedReadTime > (readTimingSeconds*1000)) 
   {
-    ESPcheck();
-    startReadTiming = millis();   
+  ESPcheck();
+  startReadTiming = millis();   
   }
   
   if (elapsedWriteTime > (writeTimingSeconds*1000)) 
   {
-    ESPcheck();//executar antes de qualquer leitura ou gravação
-    readSensors();
-    writeThingSpeak();
-    startWriteTiming = millis();   
+   ESPcheck();//executar antes de qualquer leitura ou gravação
+   readSensors();
+   writeThingSpeak();
+   startWriteTiming = millis();   
   }
   
   if (error==1) //Reevio da informação se a mesma não foi completada
   {       
-    goto start; //go to label "start"
+   goto start; //go to label "start"
   }
 }
 
